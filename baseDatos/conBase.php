@@ -1,11 +1,10 @@
 <?php
-require('conBase.php');
     class  ConBase{
         public $user;
         public $pass;
         public $conecta;
     
-        public function __construct(){
+        function __construct(){
             try{
                 $this->user = 'root';
                 $this->pass = '';
@@ -20,6 +19,13 @@ require('conBase.php');
         }
         public function close(){
             $this->conecta = null;
+        }
+        public function realizarQuery($query,$valores){
+            $insert = $this->conecta->prepare($query);
+            for($i = 1; $i <= $valores;$i++){
+                $insert->bindParam($i,$valores[$i--],PDO::PARAM_STR);
+            }
+            return $insert->execute();
         }
     }
 ?>

@@ -4,7 +4,6 @@ interface datosBase{
     public function get(object $object = null);
     public function delete();
     public function edit();
-    public function close();
 }
 
 ?>

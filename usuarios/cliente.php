@@ -22,7 +22,7 @@ class Cliente extends Usuario implements Interfacecliente{
             $this->conecta->rollBack();
 
         }finally{
-            $this->close();
+            $this->base->close();
         }
 
     }
@@ -36,6 +36,8 @@ class Cliente extends Usuario implements Interfacecliente{
 
     }
 }
-
-
+$a = new Cliente();
+$b = new Usuario();
+var_dump($a);
+var_dump($b);
 ?>

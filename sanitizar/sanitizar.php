@@ -13,7 +13,7 @@ class Sanitizar{
     }
     static function sanitizaCorreo($correo){
         $correo = strtolower(filter_var(strip_tags($correo),FILTER_SANITIZE_EMAIL));
-        return $correo
+        return $correo;
     }
 }
 

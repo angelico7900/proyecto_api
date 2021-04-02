@@ -1,20 +1,22 @@
 <?php 
 require('../baseDatos/conBase.php');
-class Usuario extends ConBase implements datosBase{
-    function __construct()
-    {
-        parent::__construct();
+require('../baseDatos/datosBase.php');
+class Usuario implements datosBase{
+    private $base;
+    function __construct(){
+        $this->base = new ConBase();
     }
     function add($datos){
         try{
-        $auxInsert = $this->conecta->prepare("INSERT INTO usuario (correo,contrasena,usuario,provincia) 
-            VALUES (?,?,?,?)");
-            $auxInsert->bindParam(1,$datos['correo'],PDO::PARAM_STR);
-            $auxInsert->bindParam(2,$datos['contrasena'],PDO::PARAM_STR);
-            $auxInsert->bindParam(3,$datos['usuario'],PDO::PARAM_STR);
-            $auxInsert->bindParam(4,$datos['provincia'],PDO::PARAM_STR);
-            $result = $auxInsert->execute();
+            $queryUsuario = "INSERT INTO usuario (correo,contrasena,usuario,provincia) VALUES (?,?,?)";
+            $queryCliente = "INSERT INTO cliente (nombre,apellidos,id_usuario) VALUES (?,?,?)";
+            $this->base->conecta->beginTransaction();
+            $this->base->realizarQuery($queryUsuario,$datos);
+            $datos[] = $this->base->conecta->LastInsertId();
+            $this->base->realizarQuery($queryCliente,$datos);
+            $this->base->conecta->commit();
         }catch(PDOException $e){
+            $this->base->conecta->rollBack();
         }
     }
     function get($object = null){
@@ -25,8 +27,7 @@ class Usuario extends ConBase implements datosBase{
     }
     function edit(){
 
-    }
-    
+    }  
 }
-$a = new ConBase();
+
 ?>
