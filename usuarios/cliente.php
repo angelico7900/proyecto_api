@@ -1,28 +1,21 @@
 <?php
-require('interfaceCliente.php');
-require('usuario.php');
-class Cliente extends Usuario implements Interfacecliente{
+//include('interfaceCliente.php');
+class Cliente extends Usuario{
     function __construct()
     {
         parent::__construct();
     }
-    function addCliente($datos){
+    function addCliente($datosUser,$datosCliente){
         try{
-            $this->conecta->beginTransaction();
-            $this->add($datos);
-        $auxInsert = $this->conecta->prepare("INSERT INTO cliente(nombre,apellidos,id_usuario) 
-            VALUES (?,?,?)");
-            $auxInsert->bindParam(1,$datos['nombre'],PDO::PARAM_STR);
-            $auxInsert->bindParam(2,$datos['apellidos'],PDO::PARAM_STR);
-            $auxInsert->bindParam(3,$this->conecta->lastInsertId(),PDO::PARAM_STR);
-            $result = $auxInsert->execute();
-            $this->conecta->commit();
-
+            $this->base->conecta->beginTransaction();
+            $this->add($datosUser);
+            $dato = $this->base->conecta->lastInsertId();
+        $auxInsert = "INSERT INTO cliente(nombre,apellidos,$dato) VALUES (?,?,?)";
+            $this->base->realizarQuery($auxInsert,$datosCliente);
+            $this->base->commit();
+            
         }catch(PDOException $e){
-            $this->conecta->rollBack();
-
-        }finally{
-            $this->base->close();
+            $this->base->conecta->rollBack();
         }
 
     }
@@ -36,8 +29,4 @@ class Cliente extends Usuario implements Interfacecliente{
 
     }
 }
-$a = new Cliente();
-$b = new Usuario();
-var_dump($a);
-var_dump($b);
 ?>
