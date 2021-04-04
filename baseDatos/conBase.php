@@ -26,7 +26,7 @@
         public function close(){
             $this->conecta = null;
         }
-        public function realizarQuery($query,$valores){
+        /*public function realizarQuery($query,$valores){
             $insert = $this->conecta->prepare($query);
             for($i = 1; $i <= $valores;$i++){
                 echo("adfsdaf");
@@ -34,6 +34,6 @@
             }
             return $insert->execute();
             
-        }
+        }*/
     }
 ?>

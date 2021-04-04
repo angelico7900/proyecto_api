@@ -1,21 +1,22 @@
 <?php
-//include('interfaceCliente.php');
+//require($_SERVER['DOCUMENT_ROOT']."/api/usuarios/interfaceCliente.php");
+include($_SERVER['DOCUMENT_ROOT']."/api/usuarios/usuario.php");
 class Cliente extends Usuario{
     function __construct()
     {
         parent::__construct();
     }
-    function addCliente($datosUser,$datosCliente){
+    function addCliente($datos){
         try{
-            $this->base->conecta->beginTransaction();
-            $this->add($datosUser);
-            $dato = $this->base->conecta->lastInsertId();
-        $auxInsert = "INSERT INTO cliente(nombre,apellidos,$dato) VALUES (?,?,?)";
-            $this->base->realizarQuery($auxInsert,$datosCliente);
-            $this->base->commit();
-            
+            //$dato = $this->conecta->lastInsertId();
+            $query = $this->conecta->prepare("INSERT INTO cliente (nombre,apellidos,id_usuario) VALUES (?,?,?)");
+            $query->bindParam(1,$datos['nombre'],PDO::PARAM_STR);
+            $query->bindParam(2,$datos['apellidos'],PDO::PARAM_STR);
+            $query->bindParam(3,"b-20",PDO::PARAM_STR);
+            $query->execute();
+            return true;
         }catch(PDOException $e){
-            $this->base->conecta->rollBack();
+            return false;
         }
 
     }
