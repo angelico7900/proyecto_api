@@ -13,12 +13,14 @@ $datosCliente['apellidos'] = $datos2->apellidos;
 $datos2->fallo = "hola";
 $cliente = new Cliente();
 $cliente->conectar();
-//$cliente->add($datosUser);
-if($cliente->addCliente($datosCliente)){
-    echo($datos);
-}else{
-    echo(json_encode($datos2));
-}
+$cliente->add($datosUser);
+$id = $cliente->conecta->lastInsertId();
+$datosCliente['id'] = $id;
+$cliente->addCliente($datosCliente);
+$response = new stdClass();
+$response->exito = 'OK';
+$cliente->close();
+echo(json_encode($response));
 /*if($cliente->add($datosUser)){
     $cliente->addCliente($datosCliente);
 }*/

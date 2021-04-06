@@ -12,7 +12,7 @@ class Cliente extends Usuario{
             $query = $this->conecta->prepare("INSERT INTO cliente (nombre,apellidos,id_usuario) VALUES (?,?,?)");
             $query->bindParam(1,$datos['nombre'],PDO::PARAM_STR);
             $query->bindParam(2,$datos['apellidos'],PDO::PARAM_STR);
-            $query->bindParam(3,"b-20",PDO::PARAM_STR);
+            $query->bindParam(3,$datos['id'],PDO::PARAM_STR);
             $query->execute();
             return true;
         }catch(PDOException $e){
@@ -27,7 +27,22 @@ class Cliente extends Usuario{
 
     }
     function getCliente($object = null){
-
+        try{
+        $query = $this->conecta->prepare("SELECT * FROM usuario,cliente WHERE usuario.id = cliente.id_usuario AND usuario.usuario = ?");
+        $query->bindParam(1,$object,PDO::PARAM_STR);
+        $query->execute();
+        $datos = $query->fetch(PDO::FETCH_ASSOC);
+        return $datos;
+        }catch(PDOException $e){
+            return false;
+        }
+    }
+    function comprobarPass($user,$pass){
+        if($user == $pass){
+            return true;
+        }else{
+            return false;
+        }
     }
 }
 ?>
