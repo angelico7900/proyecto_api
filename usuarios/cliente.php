@@ -1,18 +1,18 @@
 <?php
-//require($_SERVER['DOCUMENT_ROOT']."/api/usuarios/interfaceCliente.php");
-include($_SERVER['DOCUMENT_ROOT']."/api/usuarios/usuario.php");
-class Cliente extends Usuario{
+include($_SERVER['DOCUMENT_ROOT']."/api/baseDatos/conBase.php");
+class Cliente extends conBase{
     function __construct()
     {
         parent::__construct();
     }
     function addCliente($datos){
         try{
-            //$dato = $this->conecta->lastInsertId();
-            $query = $this->conecta->prepare("INSERT INTO cliente (nombre,apellidos,id_usuario) VALUES (?,?,?)");
+            $query = $this->conecta->prepare("INSERT INTO cliente (nombre,apellidos,correo,contrasena,provincia) VALUES (?,?,?,?,?)");
             $query->bindParam(1,$datos['nombre'],PDO::PARAM_STR);
             $query->bindParam(2,$datos['apellidos'],PDO::PARAM_STR);
-            $query->bindParam(3,$datos['id'],PDO::PARAM_STR);
+            $query->bindParam(3,$datos['correo'],PDO::PARAM_STR);
+            $query->bindParam(4,$datos['contrasena'],PDO::PARAM_STR);
+            $query->bindParam(5,$datos['provincia'],PDO::PARAM_STR);
             $query->execute();
             return true;
         }catch(PDOException $e){
@@ -26,12 +26,11 @@ class Cliente extends Usuario{
     function editCliente($datos){
 
     }
-    function getCliente($object = null){
+    function getCliente($object){
         try{
-        $query = $this->conecta->prepare("SELECT * FROM usuario,cliente WHERE usuario.id = cliente.id_usuario AND usuario.usuario = ?");
-        $query->bindParam(1,$object,PDO::PARAM_STR);
-        $query->execute();
-        $datos = $query->fetch(PDO::FETCH_ASSOC);
+        $query = $this->conecta->prepare("SELECT * FROM cliente WHERE cliente.correo = ?");
+        $query->execute(array($object));
+        $datos = $query->fetchAll();
         return $datos;
         }catch(PDOException $e){
             return false;

@@ -7,8 +7,19 @@ $usuario = json_decode($datos);
 $cliente = new Cliente();
 $pass = $usuario->contrasena;
 $cliente->conectar();
-$user = $cliente->getCliente($usuario->usuario);
-echo(json_encode($user));
+$user = $cliente->getCliente($usuario->correo);
+$response = new stdClass();
+$usuario = new stdClass();
+if(count($user) > 0){
+    if(strcmp($user[0]['contrasena'],$pass) == 0){
+        $response->exito = 'OK';
+    }else{
+        $response->exito = 'ERR';
+    }
+}else{
+    $response->exito = 'ERR';
+}
+echo(json_encode($response));
 /*$result = $cliente->comprobarPass($user['usuario'],$pass);
 $response = new stdClass();
 if($result){

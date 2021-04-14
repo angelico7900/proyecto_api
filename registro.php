@@ -6,20 +6,26 @@ $datos = file_get_contents('php://input');
 $datos2 = json_decode($datos);
 $datosUser['correo'] = $datos2->correo;
 $datosUser['contrasena'] = $datos2->contrasena;
-$datosUser['usuario'] = $datos2->usuario;
 $datosUser['provincia'] = $datos2->provincia;
-$datosCliente['nombre'] = $datos2->nombre;
-$datosCliente['apellidos'] = $datos2->apellidos;
-$datos2->fallo = "hola";
+$datosUser['nombre'] = $datos2->nombre;
+$datosUser['apellidos'] = $datos2->apellidos;
 $cliente = new Cliente();
 $cliente->conectar();
-$cliente->add($datosUser);
-$id = $cliente->conecta->lastInsertId();
-$datosCliente['id'] = $id;
-$cliente->addCliente($datosCliente);
 $response = new stdClass();
-$response->exito = 'OK';
-$cliente->close();
+$response->control = "control";
+$user = $cliente->getCliente($datosUser['correo']);
+count($user);
+if(count($user) > 0){
+  $response->exito = "EXISTS";
+}
+else{
+    if($cliente->addCliente($datosUser)){
+        $response->exito = 'OK';
+    }else{
+        $response->exito = 'ERR';
+    }
+}
+$cliente->cerrar();
 echo(json_encode($response));
 /*if($cliente->add($datosUser)){
     $cliente->addCliente($datosCliente);
@@ -32,5 +38,4 @@ if($exito){
 }
 echo(json_encode($response));*/
 //echo($datos);
-
 ?>

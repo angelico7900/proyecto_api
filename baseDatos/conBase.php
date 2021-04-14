@@ -23,17 +23,8 @@
                 echo($e->getMessage());
             }
         }
-        public function close(){
+        public function cerrar(){
             $this->conecta = null;
         }
-        /*public function realizarQuery($query,$valores){
-            $insert = $this->conecta->prepare($query);
-            for($i = 1; $i <= $valores;$i++){
-                echo("adfsdaf");
-                $insert->bindParam($i,$valores[$i--],PDO::PARAM_STR);
-            }
-            return $insert->execute();
-            
-        }*/
     }
 ?>
