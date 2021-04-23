@@ -12,7 +12,6 @@ $datosUser['apellidos'] = $datos2->apellidos;
 $cliente = new Cliente();
 $cliente->conectar();
 $response = new stdClass();
-$response->control = "control";
 $user = $cliente->getCliente($datosUser['correo']);
 count($user);
 if(count($user) > 0){
