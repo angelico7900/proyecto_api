@@ -11,6 +11,7 @@ $datosAbogado['nombre'] = $datos2->nombre;
 $datosAbogado['apellidos'] = $datos2->apellidos;
 $datosAbogado['DNI'] = $datos2->dni;
 $datosAbogado['n_letrado'] = $datos2->n_letrado;
+$datosAbogado['descripcion'] = $datos2->descripcion;
 $abogado = new Abogado();
 $abogado->conectar();
 $response = new stdClass();
@@ -20,7 +21,7 @@ if(count($user) > 0){
   $response->exito = "EXISTS";
 }
 else{
-    if($abogado->addCliente($datosAbogado)){
+    if($abogado->addAbogado($datosAbogado)){
         $response->exito = 'OK';
     }else{
         $response->exito = 'ERR';
@@ -28,15 +29,4 @@ else{
 }
 $abogado->cerrar();
 echo(json_encode($response));
-/*if($abogado->add($datosAbogado)){
-    $abogado->addCliente($datosCliente);
-}*/
-/*$response = new stdClass();
-if($exito){
-    $response->exito = 'OK';
-}else{
-    $response->exito = 'error';
-}
-echo(json_encode($response));*/
-//echo($datos);
 ?>
