@@ -1,5 +1,5 @@
 <?php
-include($_SERVER['DOCUMENT_ROOT']."/api/usuarios/abogado.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/api/usuarios/abogado.php");
 header('Access-Control-Allow-Origin: *');
 header('Acces-Control-Allow-Headers: Origin, X-Requested-With,Content-Type,Accept');
 $datos = file_get_contents('php://input');
@@ -12,6 +12,7 @@ $datosAbogado['apellidos'] = $datos2->apellidos;
 $datosAbogado['DNI'] = $datos2->dni;
 $datosAbogado['n_letrado'] = $datos2->n_letrado;
 $datosAbogado['descripcion'] = $datos2->descripcion;
+$datosAbogado['imagen'] = $datos2->imagen;
 $abogado = new Abogado();
 $abogado->conectar();
 $response = new stdClass();

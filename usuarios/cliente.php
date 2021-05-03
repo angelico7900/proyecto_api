@@ -1,5 +1,5 @@
 <?php
-include($_SERVER['DOCUMENT_ROOT']."/api/baseDatos/conBase.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/api/baseDatos/conBase.php");
 class Cliente extends conBase{
     function __construct()
     {

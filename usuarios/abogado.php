@@ -1,5 +1,5 @@
 <?php
-include($_SERVER['DOCUMENT_ROOT']."/api/baseDatos/conBase.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/api/baseDatos/conBase.php");
 class Abogado extends conBase{
     function __construct()
     {
@@ -7,7 +7,7 @@ class Abogado extends conBase{
     }
     function addAbogado($datos){
         try{
-            $query = $this->conecta->prepare("INSERT INTO abogado (nombre,apellidos,DNI,n_letrado,correo,contrasena,provincia,descripcion) VALUES (?,?,?,?,?,?,?,?)");
+            $query = $this->conecta->prepare("INSERT INTO abogado (nombre,apellidos,DNI,n_letrado,correo,contrasena,provincia,descripcion,imagen) VALUES (?,?,?,?,?,?,?,?,?)");
             $query->bindParam(1,$datos['nombre'],PDO::PARAM_STR);
             $query->bindParam(2,$datos['apellidos'],PDO::PARAM_STR);
             $query->bindParam(3,$datos['DNI'],PDO::PARAM_STR);
@@ -16,6 +16,7 @@ class Abogado extends conBase{
             $query->bindParam(6,$datos['contrasena'],PDO::PARAM_STR);
             $query->bindParam(7,$datos['provincia'],PDO::PARAM_STR);
             $query->bindParam(8,$datos['descripcion'],PDO::PARAM_STR);
+            $query->bindParam(9,$datos['imagen'],PDO::PARAM_STR);
             $query->execute();
             return true;
         }catch(PDOException $e){
