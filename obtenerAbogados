@@ -5,6 +5,10 @@ header('Acces-Control-Allow-Headers: Origin, X-Requested-With,Content-Type,Accep
 $abogado = new Abogado();
 $abogado->conectar();
 $abogados = $abogado->getAbogados();
+$longitud = count($abogados);
+for($i = 0; $i < $longitud; ++$i){
+  unset($abogados[i]['contrasena']);
+}
 $abogado->cerrar();
 $reponse = new stdCalss();
 if($abogados == null){
