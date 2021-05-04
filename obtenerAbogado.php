@@ -8,7 +8,7 @@ $datos2 = json_decode($datos);
 $obAbogado = $abogado->getAbogado($datos->correo);
 $response = new stdClass();
 if(count($obAbogado) > 0){
-  $obAbogado[0]['contrasena'] = ""; 
+  unset($obAbogado[0]['contrasena']); 
   $response->exito = 'OK';
   $response->abogado = $obAbogado[0];
 }else{
