@@ -39,6 +39,16 @@ class Abogado extends conBase{
             return false;
         }
     }
+      function getAbogados($object){
+        try{
+        $query = $this->conecta->prepare("SELECT * FROM abogado");
+        $query->execute(array($object));
+        $datos = $query->fetchAll();
+        return $datos;
+        }catch(PDOException $e){
+            return false;
+        }
+    }
     function comprobarPass($user,$pass){
         if($user == $pass){
             return true;
