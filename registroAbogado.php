@@ -30,4 +30,11 @@ else{
 }
 $abogado->cerrar();
 echo(json_encode($response));
+/*
+$datosAbogado['imagen'] = $imagen;
+list(, $imagen) = explode(';', $imagen);
+list(, $imagen) = explode(',', $imagen);
+//Decodificamos $Base64Img codificada en base64.
+$ImgDecode = base64_decode($Base64Img);
+*/
 ?>
