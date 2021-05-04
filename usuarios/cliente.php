@@ -21,9 +21,31 @@ class Cliente extends conBase{
 
     }
     function deleteCliente($datos){
+         try{
+        $query = $this->conecta->prepare("DELETE FROM cliente WHERE cliente.correo = ?");
+        $query->execute(array($object));
+        if($query->rowCount() > 0){
+            return true;
+        }else{
+            return false;
+        }
+        }catch(PDOException $e){
+            return false;
+        }
 
     }
     function editCliente($datos){
+        try{
+            $query = $this->conecta->prepare("UPDATE cliente set correo = ?");
+            $query->execute(array($object));
+            if($query->rowCount() > 0){
+            return true;
+            }else{
+                return false;
+            }
+        }catch(PDOException $e){
+            return false;
+        }
 
     }
     function getCliente($object){
@@ -33,13 +55,6 @@ class Cliente extends conBase{
         $datos = $query->fetchAll();
         return $datos;
         }catch(PDOException $e){
-            return false;
-        }
-    }
-    function comprobarPass($user,$pass){
-        if($user == $pass){
-            return true;
-        }else{
             return false;
         }
     }
