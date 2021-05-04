@@ -39,10 +39,10 @@ class Abogado extends conBase{
             return false;
         }
     }
-      function getAbogados($object){
+      function getAbogados(){
         try{
         $query = $this->conecta->prepare("SELECT * FROM abogado");
-        $query->execute(array($object));
+        $query->execute();
         $datos = $query->fetchAll();
         return $datos;
         }catch(PDOException $e){
