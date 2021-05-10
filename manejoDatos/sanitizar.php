@@ -15,6 +15,9 @@ class Sanitizar{
         $correo = strtolower(filter_var(strip_tags($correo),FILTER_SANITIZE_EMAIL));
         return $correo;
     }
+    static function sanitizarContrasenna($contrasena){
+        return filter_var(strip_tags($value),FILTER_SANITIZE_STRING);
+    }
 }
 
 
