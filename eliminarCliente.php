@@ -11,14 +11,14 @@ try{
   $cliente->conectar();
   $user = $cliente->getCliente($datos2->correo);
   if(strcmp($user[0]['contrasena'],$datos2->contrasena)){
+    $response->exito = 'ERR';
+  }else{
     if($cliente->deleteCliente($datos2->correo)){
        $response->exito = 'OK';
     }else{
-    $response->exito = 'ERR';
+      $response->exito = 'ERR';
     }
-  }else{
-    $response->exito = 'EXISTS';
-  }
+  } 
 }catch(Exception $e){
   $response->exito = 'ERR';
 }finally{
