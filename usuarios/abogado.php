@@ -56,10 +56,10 @@ class Abogado extends conBase{
             return false;
         }
     }
-    function modificarCorreo($correo){
+    function modificarCorreo($correos){
         try{
             $query = $this->conecta->prepare("UPDATE abogado SET correo = ? WHERE correo = ?");
-            $query->execute(array($correo));
+            $query->execute(array($correos));
             if($query->rowCount() > 0){
                 return true;
             }else{
