@@ -23,7 +23,7 @@ class Cliente extends conBase{
     function deleteCliente($datos){
          try{
         $query = $this->conecta->prepare("DELETE FROM cliente WHERE cliente.correo = ?");
-        $query->execute(array($object));
+        $query->execute(array($datos));
         if($query->rowCount() > 0){
             return true;
         }else{

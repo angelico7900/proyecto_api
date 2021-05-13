@@ -10,7 +10,11 @@ $obAbogado = $abogado->getAbogado($datos2->correo);
 $response = new stdClass();
 if(count($obAbogado) > 0){
   $response->exito = 'OK';
-  $response->abogado = $obAbogado[0];
+  $response->nombre = $obAbogado[0]['nombre'];
+  $response->apellidos = $obAbogado[0]['apellidos'];
+  $response->correo = $obAbogado[0]['correo'];
+  $response->descripcion = $obAbogado[0]['descripcion'];
+  $response->imagen = $obAbogado[0]['imagen'];
 }else{
   $response->exito = 'ERR';
 }

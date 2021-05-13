@@ -5,12 +5,16 @@ header('Acces-Control-Allow-Headers: Origin, X-Requested-With,Content-Type,Accep
 $cliente = new Cliente();
 $datos = file_get_contents('php://input');
 $datos2 = json_decode($datos);
-$obCliente = $cliente->getCliente($datos->correo);
+$obCliente = $cliente->getCliente($datos2->correo);
 $response = new stdClass();
 if(count($obCliente) > 0){
   $response->exito = 'OK';
-  $response->cliente = $obCliente;
+  $response->nombre = $obCliente[0]->nombre;
+  $response->apellidos = $obCliente[0]->apellidos;
+  $response->correo = $obCliente[0]->correo;
+  $response->imagen = $obCliente[0]->imagen;
 }else{
   $response->exito = 'ERR';
+}
 echo(json_encode($response));
 ?>
