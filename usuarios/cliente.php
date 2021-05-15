@@ -58,5 +58,20 @@ class Cliente extends conBase{
             return false;
         }
     }
+    function modificarCorreo($correos){
+        try{
+            $query = $this->conecta->prepare("UPDATE cliente SET correo = ? WHERE correo = ?");
+            $query->bindParam(1,$correos['correoNuevo']);
+            $query->bindParam(2,$correos['correoActual']);
+            $query->execute();
+            if($query->rowCount() > 0){
+                return true;
+            }else{
+                return false;
+            }
+            }catch(PDOException $e){
+                return false;
+            }
+    }
 }
 ?>

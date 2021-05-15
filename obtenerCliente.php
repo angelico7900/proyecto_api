@@ -10,10 +10,8 @@ $obCliente = $cliente->getCliente($datos2->correo);
 $response = new stdClass();
 if(count($obCliente) > 0){
   $response->exito = 'OK';
-  $response->nombre = $obCliente[0]->nombre;
-  $response->apellidos = $obCliente[0]->apellidos;
-  $response->correo = $obCliente[0]->correo;
-  $response->a = $obCliente[0]->nombre;
+  $response->nombre = $obCliente[0]['nombre'];
+  $response->apellidos = $obCliente[0]['apellidos'];
 }else{
   $response->exito = 'ERR';
 }
