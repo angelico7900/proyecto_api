@@ -59,7 +59,24 @@ class Abogado extends conBase{
     function modificarCorreo($correos){
         try{
             $query = $this->conecta->prepare("UPDATE abogado SET correo = ? WHERE correo = ?");
-            $query->execute(array($correos));
+            $query->bindParam(1,$correos[0],PDO::PARAM_STR);
+            $query->bindParam(2,$correos[1],PDO::PARAM_STR);
+            $query->execute();
+            if($query->rowCount() > 0){
+                return true;
+            }else{
+                return false;
+            }
+            }catch(PDOException $e){
+                return false;
+            }
+    }
+    function modificarContrasenna($contrasena,$correo){
+        try{
+            $query = $this->conecta->prepare("UPDATE abogado SET contrasena = ? WHERE correo = ?");
+            $query->bindParam(1,$contrasena,PDO::PARAM_STR);
+            $query->bindParam(2,$correo,PDO::PARAM_STR);
+            $query->execute();
             if($query->rowCount() > 0){
                 return true;
             }else{

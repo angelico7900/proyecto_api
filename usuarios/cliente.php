@@ -34,20 +34,6 @@ class Cliente extends conBase{
         }
 
     }
-    function editCliente($datos){
-        try{
-            $query = $this->conecta->prepare("UPDATE cliente set correo = ?");
-            $query->execute(array($object));
-            if($query->rowCount() > 0){
-            return true;
-            }else{
-                return false;
-            }
-        }catch(PDOException $e){
-            return false;
-        }
-
-    }
     function getCliente($object){
         try{
         $query = $this->conecta->prepare("SELECT * FROM cliente WHERE cliente.correo = ?");
@@ -61,8 +47,23 @@ class Cliente extends conBase{
     function modificarCorreo($correos){
         try{
             $query = $this->conecta->prepare("UPDATE cliente SET correo = ? WHERE correo = ?");
-            $query->bindParam(1,$correos['correoNuevo']);
-            $query->bindParam(2,$correos['correoActual']);
+            $query->bindParam(1,$correos['correoNuevo'],PDO::PARAM_STR);
+            $query->bindParam(2,$correos['correoActual'],PDO::PARAM_STR);
+            $query->execute();
+            if($query->rowCount() > 0){
+                return true;
+            }else{
+                return false;
+            }
+            }catch(PDOException $e){
+                return false;
+            }
+    }
+    function modificarContrasenna($contrasena,$correo){
+        try{
+            $query = $this->conecta->prepare("UPDATE cliente SET contrasena = ? WHERE correo = ?");
+            $query->bindParam(1,$contrasena,PDO::PARAM_STR);
+            $query->bindParam(2,$correo,PDO::PARAM_STR);
             $query->execute();
             if($query->rowCount() > 0){
                 return true;

@@ -10,10 +10,15 @@ $correos[] = $datos2->correoNuevo;
 $correos[] = $datos2->correoActual;
 $abogado->conectar();
 $response = new stdClass();
-if($abogado->modificarCorreo($correos)){
-    $response->exito = 'OK';
+$abogadoAux = $abogado->getAbogado($correos[0]);
+if(count($abogadoAux) > 0){
+    $response->exito = 'EXISTS';
 }else{
-    $response->exito = 'ERR';
+    if($abogado->modificarCorreo($correos)){
+        $response->exito = 'OK';
+    }else{
+        $response->exito = 'ERR';
+    }
 }
 echo(json_encode($response));
 ?>
