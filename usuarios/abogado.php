@@ -86,5 +86,20 @@ class Abogado extends conBase{
                 return false;
             }
     }
+    function modificarImagen($imagen,$correo){
+        try{
+            $query = $this->conecta->prepare("UPDATE abogado SET imagen = ? WHERE correo = ?");
+            $query->bindParam(1,$imagen,PDO::PARAM_STR);
+            $query->bindParam(2,$correo,PDO::PARAM_STR);
+            $query->execute();
+            if($query->rowCount() > 0){
+                return true;
+            }else{
+                return false;
+            }
+            }catch(PDOException $e){
+                return false;
+            }
+    }
 }
 ?>
