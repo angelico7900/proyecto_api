@@ -17,5 +17,17 @@ class Mensajero extends conBase{
             return false;
         }
     }
+    function obtenerMensajes($correo){
+        try{
+            $query = $this->conecta->prepare("SELECT receptor,caso,emisor FROM mensajeria WHERE receptor = ? OR emisor = ?");
+            $query->bindParam(1,$correo,PDO::PARAM_STR);
+            $query->bindParam(2,$correo,PDO::PARAM_STR);
+            $query->execute();
+            $datos = $query->fetchAll();
+            return $datos;
+        }catch(PDOException $e){
+            return false;
+        }
+    }
 }
 ?>
