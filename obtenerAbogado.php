@@ -14,7 +14,9 @@ if(count($obAbogado) > 0){
   $response->apellidos = $obAbogado[0]['apellidos'];
   $response->correo = $obAbogado[0]['correo'];
   $response->descripcion = $obAbogado[0]['descripcion'];
-  $response->imagen = $obAbogado[0]['imagen'];
+  $response->imagen = "data:image/png;base64,".base64_encode(file_get_contents($obAbogado[0]['imagen']));
+  $response->descripcion = $obAbogado[0]['descripcion'];
+  $response->numero = $obAbogado[0]['n_letrado'];
 }else{
   $response->exito = 'ERR';
 }

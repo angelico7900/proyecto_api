@@ -10,17 +10,26 @@ list(, $imagen) = explode(',', $imagen);
 //Decodificamos $Base64Img codificada en base64.
 $imgDecode = base64_decode($imagen);
 $img = "$datos2->correo.png";
-file_put_contents("img/".$img,$imgDecode);
-$abogado = new Abogado();
-$abogado->conectar();
-$abogadoAux = $abogado->getAbogado($datos2->correo);
+$ruta = "img/".$img;
+file_put_contents($ruta,$imgDecode);
 $response = new stdClass();
-if(count($abogadoAux) > 0){
-    // if($abogado->modificarImagen($datos2))
+if(file_exists($ruta)){
+    $abogado = new Abogado();
+    $abogado->conectar();
+    $abogadoAux = $abogado->getAbogado($datos2->correo);
+    if(count($abogadoAux) > 0){
+        if($abogado->modificarImagen($ruta,$datos2->correo)){
+            $response->exito = 'OK';
+        }else{
+            $response->exito = 'ERR';    
+        }
+    }else{
+        $response->exito = 'NOFOUND';
+    }
 }else{
-    $response->exito = 'ERR';
+    $response->exito = 'NOUP';
 }
 // $abogado->modificarImagen($datos2->);
-echo(json_encode($datos2));
+echo(json_encode($response));
 
 ?>

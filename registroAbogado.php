@@ -12,7 +12,12 @@ $datosAbogado['apellidos'] = $datos2->apellidos;
 $datosAbogado['DNI'] = $datos2->dni;
 $datosAbogado['n_letrado'] = $datos2->n_letrado;
 $datosAbogado['descripcion'] = $datos2->descripcion;
-$datosAbogado['imagen'] = $datos2->imagen;
+$imagen = $datos2->imagen;
+list(, $imagen) = explode(';', $imagen);
+list(, $imagen) = explode(',', $imagen);
+$imgDecode = base64_decode($imagen);
+$img = "$datos2->correo.png";
+$ruta = "img/".$img;
 $abogado = new Abogado();
 $abogado->conectar();
 $response = new stdClass();
@@ -22,10 +27,17 @@ if(count($user) > 0){
   $response->exito = "EXISTS";
 }
 else{
-    if($abogado->addAbogado($datosAbogado)){
-        $response->exito = 'OK';
-    }else{
-        $response->exito = 'ERR';
+    $imgDecode = base64_decode($imagen);
+    $img = "$datos2->correo.png";
+    $ruta = "img/".$img;
+    file_put_contents($ruta,$imgDecode);
+    if(file_exists($ruta)){
+        $datosAbogado['imagen'] = $ruta;
+        if($abogado->addAbogado($datosAbogado)){
+            $response->exito = 'OK';
+        }else{
+            $response->exito = 'ERR';
+        }
     }
 }
 $abogado->cerrar();
