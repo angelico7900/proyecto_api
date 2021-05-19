@@ -10,14 +10,10 @@ $parametros['caso'] = $datos2->caso;
 $mensajero = new Mensajero();
 $mensajero->conectar();
 $response = new stdClass();
-$response->prueba = "asdf";
-$response->param = $parametros['emisor'];
-$response->param2 = $parametros['receptor'];
-$mensajero->addMensaje($parametros);
-// if($mensajero->addMensaje($parametros)){
-//     $response->exito = 'OK';
-// }else{
-//     $response->exito = 'ERR';
-// }
+if($mensajero->addMensaje($parametros)){
+    $response->exito = 'OK';
+}else{
+    $response->exito = 'ERR';
+}
 echo(json_encode($response));
 ?>
