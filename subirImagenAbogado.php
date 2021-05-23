@@ -7,7 +7,6 @@ $datos2 = json_decode($datos);
 $imagen = $datos2->archivo;
 list(, $imagen) = explode(';', $imagen);
 list(, $imagen) = explode(',', $imagen);
-//Decodificamos $Base64Img codificada en base64.
 $imgDecode = base64_decode($imagen);
 $img = "$datos2->correo.png";
 $ruta = "img/".$img;
