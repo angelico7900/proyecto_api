@@ -29,5 +29,28 @@ class Mensajero extends conBase{
             return false;
         }
     }
+    function addOpinion($datos){
+            try{
+                $query = $this->conecta->prepare("INSERT INTO opiniones (opinion,id_abogado,id_cliente) VALUES (?,?,?)");
+                $query->bindParam(1,$datos['opinion'],PDO::PARAM_STR);
+                $query->bindParam(2,$datos['id_abogado'],PDO::PARAM_INT);
+                $query->bindParam(3,$datos['id_cliente'],PDO::PARAM_INT);
+                $query->execute();
+                return true;
+            }catch(PDOException $e){
+                return false;
+            }
+        }
+    function getOpiniones($id){
+        try{
+            $query = $this->conecta->prepare("SELECT * FROM opiniones WHERE id_abogado = ?");
+            $query->bindParam(1,$id,PDO::PARAM_INT);
+            $query->execute();
+            $datos = $query->fetchAll();
+            return $datos;
+        }catch(PDOException $e){
+            return false;
+        }
+    }
 }
 ?>

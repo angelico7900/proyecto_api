@@ -44,6 +44,17 @@ class Cliente extends conBase{
             return false;
         }
     }
+    function getClienteId($id){
+        try{
+            $query = $this->conecta->prepare("SELECT * FROM cliente WHERE cliente.id = ?");
+            $query->bindParam(1,$id,PDO::PARAM_INT);
+            $query->execute();
+            $datos = $query->fetchAll();
+            return $datos;
+            }catch(PDOException $e){
+                return false;
+            }
+    }
     function modificarCorreo($correos){
         try{
             $query = $this->conecta->prepare("UPDATE cliente SET correo = ? WHERE correo = ?");
