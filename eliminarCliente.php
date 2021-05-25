@@ -10,14 +10,18 @@ try{
   $cliente = new Cliente();
   $cliente->conectar();
   $user = $cliente->getCliente($datos2->correo);
-  if(strcmp($user[0]['contrasena'],$datos2->contrasena)){
+  if(count($user)){
     $response->exito = 'ERR';
   }else{
-    if($cliente->deleteCliente($datos2->correo)){
-       $response->exito = 'OK';
-    }else{
-      $response->exito = 'ERR';
-    }
+      if(Cifrar::comprobarHash($datos2->contrasena,$user[0]['contrasena'])){
+        if($cliente->deleteCliente($datos2->correo)){
+          $response->exito = 'OK';
+        }else{
+          $response->exito = 'ERR';
+        }
+      }else{
+        $response->exito = 'ERR';
+      }
   } 
 }catch(Exception $e){
   $response->exito = 'ERR';

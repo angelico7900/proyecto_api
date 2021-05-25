@@ -17,14 +17,9 @@ if($opcion == 'cliente'){
     $abogado->conectar();
     $user = $abogado->getAbogado($usuario->correo);
     }
-//     else if($opcion == 'despacho'){
-//     $despacho = new Despacho();
-//     $despacho->conectar();
-//     $user = $despacho->getDespacho($usuario->correo);
-// }
 $response = new stdClass();
     if(count($user) > 0){
-    if(strcmp($user[0]['contrasena'],$pass) == 0){
+    if(Cifrar::comprobarHash($pass,$user[0]['contrasena'])){
         $response->exito = 'OK';
         $response->tipo = $opcion;
     }else{  
