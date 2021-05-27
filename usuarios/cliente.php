@@ -80,8 +80,8 @@ class Cliente extends conBase{
     }
     function modificarCorreo($correos){
         try{
-            $correos[0] = Sanitizar::sanitizaCorreo($correos[0]);
-            $correos[1] = Sanitizar::sanitizaCorreo($correos[1]);
+            $correos['correoNuevo'] = Sanitizar::sanitizaCorreo($correos['correoNuevo']);
+            $correos['correoActual'] = Sanitizar::sanitizaCorreo($correos['correoActual']);
             $correos = Cifrar::megaCifrar($correos);
             $query = $this->conecta->prepare("UPDATE cliente SET correo = ? WHERE correo = ?");
             $query->bindParam(1,$correos['correoNuevo'],PDO::PARAM_STR);
