@@ -14,7 +14,7 @@ $response = new stdClass();
 $clienteAux = $cliente->getCliente($datos3['correo']);
 if(count($clienteAux) > 0){
 
-    if($clienteAux[0]['contrasena'] == $datos3['contrasennaActual']){
+    if(Cifrar::comprobarHash($datos3['contrasennaActual'],$clienteAux[0]['contrasena'])){
         if($cliente->modificarContrasenna($datos3['contrasennaNueva'],$datos3['correo'])){
             $response->exito = 'OK';
         }else{

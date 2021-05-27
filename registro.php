@@ -26,15 +26,4 @@ else{
 }
 $cliente->cerrar();
 echo(json_encode($response));
-/*if($cliente->add($datosUser)){
-    $cliente->addCliente($datosCliente);
-}*/
-/*$response = new stdClass();
-if($exito){
-    $response->exito = 'OK';
-}else{
-    $response->exito = 'error';
-}
-echo(json_encode($response));*/
-//echo($datos);
 ?>

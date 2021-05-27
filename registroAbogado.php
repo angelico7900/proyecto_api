@@ -16,8 +16,6 @@ $imagen = $datos2->imagen;
 list(, $imagen) = explode(';', $imagen);
 list(, $imagen) = explode(',', $imagen);
 $imgDecode = base64_decode($imagen);
-$img = "$datos2->correo.png";
-$ruta = "img/".$img;
 $abogado = new Abogado();
 $abogado->conectar();
 $response = new stdClass();
@@ -28,8 +26,9 @@ if(count($user) > 0){
 }
 else{
     $imgDecode = base64_decode($imagen);
-    $img = "$datos2->correo.png";
-    $ruta = "img/".$img;
+    $imgAux = $datos2->correo;
+    $imgAux = Cifrar::megaCifrar($imgAux);
+    $ruta = "img/$imgAux.png";
     file_put_contents($ruta,$imgDecode);
     if(file_exists($ruta)){
         $datosAbogado['imagen'] = $ruta;
@@ -42,11 +41,4 @@ else{
 }
 $abogado->cerrar();
 echo(json_encode($response));
-/*
-$datosAbogado['imagen'] = $imagen;
-list(, $imagen) = explode(';', $imagen);
-list(, $imagen) = explode(',', $imagen);
-//Decodificamos $Base64Img codificada en base64.
-$ImgDecode = base64_decode($Base64Img);
-*/
 ?>

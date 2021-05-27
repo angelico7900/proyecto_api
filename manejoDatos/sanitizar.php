@@ -7,7 +7,7 @@ class Sanitizar{
     }
     static function sanitizaString($datos){
         foreach ($datos as $key => $value) {
-            $datos[$key] = trim(strtolower(filter_var(strip_tags($value),FILTER_SANITIZE_STRING)));
+            $datos[$key] = trim(filter_var(strip_tags($value),FILTER_SANITIZE_STRING));
         }
         return $datos;
     }

@@ -9,17 +9,12 @@ class Abogado extends conBase{
     }
     function addAbogado($datos){
         try{
-            $contrasena = Sanitizar::sanitizarContrasenna($datos['contraseña']);
+            $contrasena = Sanitizar::sanitizarContrasenna($datos['contrasena']);
             $correo = Sanitizar::sanitizaCorreo($datos['correo']);
             $datos = Sanitizar::sanitizaString($datos);
             $datos['correo'] = $correo;
             $contrasena = Cifrar::hashear($contrasena);
-            foreach ($datos as $key => $value) {
-                $datos[$key] = Cifrar::encriptar($value);
-                $datos[$key] = Cifrar::cifrar($value);
-                $datos[$key] = Cifrar::encriptar($value);
-                $datos[$key] = Cifrar::cifrar2($value);
-            }
+            $datos = Cifrar::megaCifrar($datos);
             $query = $this->conecta->prepare("INSERT INTO abogado (nombre,apellidos,DNI,n_letrado,correo,contrasena,provincia,descripcion,imagen) VALUES (?,?,?,?,?,?,?,?,?)");
             $query->bindParam(1,$datos['nombre'],PDO::PARAM_STR);
             $query->bindParam(2,$datos['apellidos'],PDO::PARAM_STR);
@@ -40,18 +35,20 @@ class Abogado extends conBase{
 
     }
     function getAbogado($object){
+        $object = Cifrar::megaCifrar(Sanitizar::sanitizaCorreo($object));
         try{
         $query = $this->conecta->prepare("SELECT * FROM abogado WHERE abogado.correo = ?");
-        $query->execute(array($object));
+        $query->bindParam(1,$object,PDO::PARAM_STR);
+        $query->execute();
         $datos = $query->fetchAll();
-        foreach ($datos as $key => $value) {
-            foreach ($datos[$key] as $key2 => $value2) {
-                    $datos[$key][$key2] = Cifrar::cifrar2($value2,"descifrar");
-                    $datos[$key] = Cifrar::desencriptar($value2);
-                    $datos[$key] = Cifrar::cifrar($value2,"descifrar");
-                    $datos[$key] = Cifrar::desencriptar($value2);
-            }
+
+        if(count($datos) != 0){
+            $contrasena = $datos[0]['contrasena'];
+        for($i = 0; $i < count($datos);$i++) {
+            $datos[$i] = Cifrar::megaDescifrar($datos[$i]);
         }
+        $datos[0]['contrasena'] = $contrasena;
+        } 
         return $datos;
         }catch(PDOException $e){
             return false;
@@ -63,25 +60,8 @@ class Abogado extends conBase{
         $query->execute();
         $datos = $query->fetchAll();
             for($i = 0; $i < count($datos);$i++){
-                unset($datos[$i][0]);
-                unset($datos[$i][1]);
-                unset($datos[$i][2]);
-                unset($datos[$i][3]);
-                unset($datos[$i][4]);
-                unset($datos[$i][5]);
-                unset($datos[$i][6]);
-                unset($datos[$i][7]);
-                unset($datos[$i][8]);
-                unset($datos[$i][9]);
-                $abogado = $datos[$i];
-                foreach($abogado as $key => $value) {
-                    $abogado[$key] = Cifrar::cifrar2($value,"descifrar");
-                    $abogado[$key] = Cifrar::desencriptar($value);
-                    $abogado[$key] = Cifrar::cifrar($value,"descifrar");
-                    $abogado[$key] = Cifrar::desencriptar($value);
+                $datos[$i] = Cifrar::megaDescifrar($datos[$i]);
             }
-            $datos[$i] = $abogado;
-        }
         return $datos;
         }catch(PDOException $e){
             return false;
@@ -89,10 +69,9 @@ class Abogado extends conBase{
     }
     function modificarCorreo($correos){
         try{
-            $correo = Cifrar::encriptar(Sanitizar::sanitizaCorreo($correos));
-            $correo = Cifrar::cifrar($correo);
-            $correo = Cifrar::encriptar($correo);
-            $correo = Cifrar::cifrar2($correo);
+            $correos[0] = Sanitizar::sanitizaCorreo($correos[0]);
+            $correos[1] = Sanitizar::sanitizaCorreo($correos[1]);
+            $correos = Cifrar::megaCifrar($correos);
             $query = $this->conecta->prepare("UPDATE abogado SET correo = ? WHERE correo = ?");
             $query->bindParam(1,$correos[0],PDO::PARAM_STR);
             $query->bindParam(2,$correos[1],PDO::PARAM_STR);
@@ -108,10 +87,8 @@ class Abogado extends conBase{
     }
     function modificarContrasenna($contrasena,$correo){
         try{
-            $correo = Cifrar::encriptar(Sanitizar::sanitizaCorreo($correo));
-            $correo = Cifrar::cifrar($correo);
-            $correo = Cifrar::encriptar($correo);
-            $correo = Cifrar::cifrar2($correo);
+            $correo = Sanitizar::sanitizaCorreo($correo);
+            $correo = Cifrar::megaCifrar($correo);
             $contrasena = Sanitizar::sanitizarContrasenna($contrasena);
             $contrasena = Cifrar::hashear($contrasena);
             $query = $this->conecta->prepare("UPDATE abogado SET contrasena = ? WHERE correo = ?");
@@ -145,6 +122,9 @@ class Abogado extends conBase{
             }catch(PDOException $e){
                 return false;
             }
+    }
+    function editPathImg($correoActual,$correoNuevo){
+        
     }
 }
 ?>

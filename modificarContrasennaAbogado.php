@@ -13,7 +13,7 @@ $abogado->conectar();
 $response = new stdClass();
 $AboagdoAux = $abogado->getAbogado($datos3['correo']);
 if(count($AboagdoAux) > 0){
-    if($AboagdoAux[0]['contrasena'] == $datos3['contrasennaActual']){
+    if(Cifrar::comprobarHash($datos3['contrasennaActual'],$AboagdoAux[0]['contrasena'])){
         if($abogado->modificarContrasenna($datos3['contrasennaNueva'],$datos3['correo'])){
             $response->exito = 'OK';
         }else{

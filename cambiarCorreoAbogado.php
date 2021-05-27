@@ -15,6 +15,9 @@ if(count($abogadoAux) > 0){
     $response->exito = 'EXISTS';
 }else{
     if($abogado->modificarCorreo($correos)){
+        $abogado->editPathImg($datos2->correoActual,$datos2->correoNuevo){
+            
+        }
         $response->exito = 'OK';
     }else{
         $response->exito = 'ERR';

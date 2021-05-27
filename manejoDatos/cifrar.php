@@ -47,5 +47,39 @@ class Cifrar{
     static function comprobarHash($dato,$hash){
         return password_verify($dato,$hash);
     }
+    static public function  megaCifrar($dato){
+        if (is_array($dato)) {
+            foreach ($dato as $key => $value) {
+                $aux = Cifrar::cifrar($value);
+                $aux = Cifrar::encriptar($aux);
+                $aux = Cifrar::cifrar2($aux);
+                $aux = Cifrar::encriptar($aux);
+                $dato[$key] = $aux;
+            }
+        } else {
+                $dato = Cifrar::cifrar($dato);
+                $dato = Cifrar::encriptar($dato);
+                $dato = Cifrar::cifrar2($dato);
+                $dato = Cifrar::encriptar($dato);
+        }
+        return $dato;
+    }
+    static public function megaDescifrar($dato){
+        if(is_array($dato)){
+        foreach($dato as $key => $value){
+        $aux = Cifrar::desencriptar($value);
+        $aux = Cifrar::cifrar2($aux,"descifrar");
+        $aux = Cifrar::desencriptar($aux);
+        $aux = Cifrar::cifrar($aux,"descifrar");
+        $dato[$key] = $aux;
+        }
+    }else{
+            $dato = Cifrar::desencriptar($dato);
+            $dato = Cifrar::cifrar2($dato,"descifrar");
+            $dato = Cifrar::desencriptar($dato);
+            $dato = Cifrar::cifrar($dato,"descifrar");
+    }
+        return $dato;
+    }
 }
 ?>

@@ -8,7 +8,8 @@ $imagen = $datos2->archivo;
 list(, $imagen) = explode(';', $imagen);
 list(, $imagen) = explode(',', $imagen);
 $imgDecode = base64_decode($imagen);
-$img = "$datos2->correo.png";
+$imgAux = Cifrar::megaCifrar($datos2->correo);
+$img = "$imgAux.png";
 $ruta = "img/".$img;
 file_put_contents($ruta,$imgDecode);
 $response = new stdClass();
@@ -23,12 +24,11 @@ if(file_exists($ruta)){
             $response->exito = 'ERR';    
         }
     }else{
-        $response->exito = 'NOFOUND';
+        $response->exito = 'ERR';
     }
 }else{
-    $response->exito = 'NOUP';
+    $response->exito = 'ERR';
 }
-// $abogado->modificarImagen($datos2->);
 echo(json_encode($response));
 
 ?>
