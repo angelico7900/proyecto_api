@@ -55,7 +55,6 @@ class Cliente extends conBase{
         $datos[0]['contrasena'] = $contrasena;
         } 
         return $datos;
-        return $datos;
         }catch(PDOException $e){
             return false;
         }
