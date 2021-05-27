@@ -124,7 +124,21 @@ class Abogado extends conBase{
             }
     }
     function editPathImg($correoActual,$correoNuevo){
-        
+        try{
+            $correoActual = Sanitizar::sanitizaCorreo($correoActual);
+            $correoActual = Cifrar::megaCifrar($correoActual);
+            $correoNuevo = Sanitizar::sanitizaCorreo($correoNuevo);
+            $correoNuevo = Cifrar::megaCifrar($correoNuevo);
+            $rutaActual = "img/".$correoActual.".png";
+            $rutaNuevo = "img/".$correoNuevo.".png";
+            if(rename($rutaActual,$rutaNueva)){
+                return true;
+            }else{
+                return false;
+            }
+        }catch(Exception $e){
+            return false;
+        }
     }
 }
 ?>
