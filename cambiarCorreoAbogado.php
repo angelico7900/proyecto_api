@@ -15,10 +15,15 @@ if(count($abogadoAux) > 0){
     $response->exito = 'EXISTS';
 }else{
     if($abogado->modificarCorreo($correos)){
-        $abogado->editPathImg($datos2->correoActual,$datos2->correoNuevo){
-            
+        if($abogado->editPathImg($datos2->correoActual,$datos2->correoNuevo)){
+            if($abogado->modificarImagen($datos2->correoNuevo,"img/".Cifrar::megaCifrar(Sanitizar::sanitizarString($datos2->correoNuevo)).".png")){
+                $response->exito = 'OK';
+            }else{
+                $response->exito = 'ERR';
+            }
+        }else{
+            $response->exito = 'ERR';
         }
-        $response->exito = 'OK';
     }else{
         $response->exito = 'ERR';
     }
