@@ -1,0 +1,20 @@
+<?php
+include_once($_SERVER["DOCUMENT_ROOT"]."/api"."/usuarios"."/abogado.php");
+header('Access-Control-Allow-Origin: *');
+header('Acces-Control-Allow-Headers: Origin, X-Requested-With,Content-Type,Accept');
+$datos = file_get_contents("php://input");
+$datos2 = json_decode($datos);
+$abogado = new Abogado();
+$abogado->conectar();
+$parametros['ciudad'] = $datos2->ciudad;
+$parametros['especialidad'] = $datos2->especialidad;
+$abogados = $abogado->obtenerAbogadosWhere($parametros);
+$response = new stdClass();
+if(count($abogados) == 0){
+  $response->exito = 'NO';
+}else{
+  $response->exito = 'OK';
+  $response->abogados = $abogados;
+}
+echo(json_encode($response));
+?>
