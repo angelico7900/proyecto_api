@@ -44,10 +44,12 @@ class Abogado extends conBase{
 
         if(count($datos) != 0){
             $contrasena = $datos[0]['contrasena'];
+            $id = $datos[0]['id'];
         for($i = 0; $i < count($datos);$i++) {
             $datos[$i] = Cifrar::megaDescifrar($datos[$i]);
         }
         $datos[0]['contrasena'] = $contrasena;
+        $datos[0]['id'] = $id;
         } 
         return $datos;
         }catch(PDOException $e){
@@ -106,14 +108,8 @@ class Abogado extends conBase{
     }
     function modificarImagen($imagen,$correo){
         try{
-            $correo = Cifrar::encriptar(Sanitizar::sanitizaCorreo($correo));
-            $correo = Cifrar::cifrar($correo);
-            $correo = Cifrar::encriptar($correo);
-            $correo = Cifrar::cifrar2($correo);
-            $$imagen = Cifrar::encriptar(Sanitizar::sanitizaCorreo($imagen));
-            $imagen = Cifrar::cifrar($imagen);
-            $imagen = Cifrar::encriptar($imagen);
-            $imagen = Cifrar::cifrar2($imagen);
+            $imagen = Cifrar::megaCifrar(Sanitizar::sanitizaString($imagen));
+            $correo = Cifrar::megaCifrar(Sanitizar::sanitizaString($correo));
             $query = $this->conecta->prepare("UPDATE abogado SET imagen = ? WHERE correo = ?");
             $query->bindParam(1,$imagen,PDO::PARAM_STR);
             $query->bindParam(2,$correo,PDO::PARAM_STR);
@@ -131,11 +127,29 @@ class Abogado extends conBase{
             $correoNuevo = Cifrar::megaCifrar($correoNuevo);
             $rutaActual = "img/".$correoActual.".png";
             $rutaNuevo = "img/".$correoNuevo.".png";
-            if(rename($rutaActual,$rutaNueva)){
+            if(rename($rutaActual,$rutaNuevo)){
                 return true;
             }else{
                 return false;
             }
+        }catch(Exception $e){
+            return false;
+        }
+    }
+    function obtenerAbogadosWhere($datos){
+        try{
+            $datos = Cifrar::megaCifrar(Sanitizar::sanitizaString($datos));
+            $query = $this->conecta->prepare("SELECT * FROM abogado WHERE provincia = ?");
+            $query->bindParam(1,$datos['ciudad'],PDO::PARAM_STR);
+            $query->execute();
+            $resultado = $query->fetchAll();
+            if(count($resultado) == 0){
+                return $resultado;
+            }
+            for($i = 0; $i < count($datos);$i++){
+                $resultado[$i] = Cifrar::megaDescifrar($resultado[$i]);
+            }
+            return $resultado;
         }catch(Exception $e){
             return false;
         }

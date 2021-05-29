@@ -7,14 +7,17 @@ $datos2 = json_decode($datos);
 $abogado = new Abogado();
 $abogado->conectar();
 $parametros['ciudad'] = $datos2->ciudad;
-$parametros['especialidad'] = $datos2->especialidad;
 $abogados = $abogado->obtenerAbogadosWhere($parametros);
 $response = new stdClass();
-if(count($abogados) == 0){
+$longitud = count($abogados);
+if($longitud == 0){
   $response->exito = 'NO';
 }else{
   $response->exito = 'OK';
-  $response->abogados = $abogados;
+  for($i = 0; $i < $longitud; ++$i){
+    $abogados[$i]['imagen'] = "data:image/png;base64,".base64_encode(file_get_contents($abogados[$i]['imagen']));
 }
+}
+$response->abogados = $abogados;
 echo(json_encode($response));
 ?>

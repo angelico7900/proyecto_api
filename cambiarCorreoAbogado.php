@@ -16,7 +16,7 @@ if(count($abogadoAux) > 0){
 }else{
     if($abogado->modificarCorreo($correos)){
         if($abogado->editPathImg($datos2->correoActual,$datos2->correoNuevo)){
-            if($abogado->modificarImagen($datos2->correoNuevo,"img/".Cifrar::megaCifrar(Sanitizar::sanitizarString($datos2->correoNuevo)).".png")){
+            if($abogado->modificarImagen($datos2->correoNuevo,"img/".Cifrar::megaCifrar(Sanitizar::sanitizaCorreo($datos2->correoNuevo)).".png")){
                 $response->exito = 'OK';
             }else{
                 $response->exito = 'ERR';

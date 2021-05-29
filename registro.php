@@ -13,7 +13,6 @@ $cliente = new Cliente();
 $cliente->conectar();
 $response = new stdClass();
 $user = $cliente->getCliente($datosUser['correo']);
-count($user);
 if(count($user) > 0){
   $response->exito = "EXISTS";
 }

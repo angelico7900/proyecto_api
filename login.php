@@ -19,14 +19,17 @@ if($opcion == 'cliente'){
     }
 $response = new stdClass();
     if(count($user) > 0){
-    if(Cifrar::comprobarHash($pass,$user[0]['contrasena'])){
-        $response->exito = 'OK';
-        $response->tipo = $opcion;
-    }else{  
-        $response->exito = 'ERR';
-    }
-}else{
-    $response->exito = 'ERR';
-}
+        if(Cifrar::comprobarHash($pass,$user[0]['contrasena'])){
+            $response->exito = 'OK';
+//         $response->tipo = $opcion;
+//     }else{  
+//         $response->exito = 'ERR';
+//     }
+        }else{
+         $response->exito = 'ERR';
+        }
+     }else{
+         $response->exito = "no";
+     }
 echo(json_encode($response));
 ?>

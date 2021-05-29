@@ -1,5 +1,7 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT']."/api/baseDatos/conBase.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/api"."/manejoDatos"."/sanitizar.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/api"."/manejoDatos"."/cifrar.php");
 class Cliente extends conBase{
     function __construct()
     {
@@ -41,20 +43,22 @@ class Cliente extends conBase{
 
     }
     function getCliente($object){
-        try{
         $object = Cifrar::megaCifrar(Sanitizar::sanitizaCorreo($object));
-        $query = $this->conecta->prepare("SELECT * FROM cliente WHERE cliente.correo = ?");
-        $query->bindParam(1,$object,PDO::PARAM_STR);
-        $query->execute();
-        $datos = $query->fetchAll();
-        if(count($datos) != 0){
-            $contrasena = $datos[0]['contrasena'];
-        for($i = 0; $i < count($datos);$i++) {
-            $datos = Cifrar::megaDescifrar($datos[$i]);
-        }
-        $datos[0]['contrasena'] = $contrasena;
-        } 
-        return $datos;
+        try{
+            $query = $this->conecta->prepare("SELECT * FROM cliente WHERE cliente.correo = ?");
+            $query->bindParam(1,$object,PDO::PARAM_STR);
+            $query->execute();
+            $datos = $query->fetchAll();
+            if(count($datos) > 0){
+                $contrasena = $datos[0]['contrasena'];
+                $id = $datos[0]['id'];
+            for($i = 0; $i < count($datos);$i++) {
+                $datos[$i] = Cifrar::megaDescifrar($datos[$i]);
+            }
+            $datos[0]['id'] = $id;
+            $datos[0]['contrasena'] = $contrasena;
+            } 
+            return $datos;
         }catch(PDOException $e){
             return false;
         }
@@ -65,12 +69,9 @@ class Cliente extends conBase{
             $query->bindParam(1,$id,PDO::PARAM_INT);
             $query->execute();
             $datos = $query->fetchAll();
-            foreach ($datos as $key => $value) {
-                foreach ($datos[$key] as $key2 => $value2) {
-                        $datos[$key][$key2] = Cifrar::cifrar2($value2,"descifrar");
-                        $datos[$key] = Cifrar::desencriptar($value2);
-                        $datos[$key] = Cifrar::cifrar($value2,"descifrar");
-                        $datos[$key] = Cifrar::desencriptar($value2);
+            if(count($datos) > 0){
+                for($i = 0; $i < count($datos);$i++) {
+                    $datos[$i] = Cifrar::megaDescifrar($datos[$i]);
                 }
             }
             return $datos;
