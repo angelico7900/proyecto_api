@@ -29,9 +29,11 @@ class Cliente extends conBase{
 
     }
     function deleteCliente($datos){
+        $datos = Cifrar::megaCifrar(Sanitizar::sanitizaCorreo($datos));
          try{
         $query = $this->conecta->prepare("DELETE FROM cliente WHERE cliente.correo = ?");
-        $query->execute(array($datos));
+        $query->bindParam(1,$datos,PDO::PARAM_STR);
+        $query->execute();
         if($query->rowCount() > 0){
             return true;
         }else{

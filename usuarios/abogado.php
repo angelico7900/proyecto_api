@@ -32,6 +32,15 @@ class Abogado extends conBase{
         }
     }
     function deleteAbogado($datos){
+        $datos = Cifrar::megaCifrar(Sanitizar::sanitizaCorreo($datos));
+        try{
+        $query = $this->conecta->prepare("DELETE FROM abogado WHERE abogado.correo = ?");
+        $query->bindParam(1,$datos,PDO::PARAM_STR);
+        $query->execute();
+        return true;
+        }catch(PDOException $e){
+            return false;
+        }
 
     }
     function getAbogado($object){

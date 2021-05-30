@@ -13,7 +13,7 @@ if(count($pago) == 0){
     $response->pagado = 'ERR';
 }else{
     $fechaActual = strval(date("Y-m-d"));
-    if($fechaActualString > $pago[0]['pagado']){
+    if($fechaActual > $pago[count($pago) - 1]['pagado']){
         $response->pagado = 'ERR';
     }else{
         $response->pagado = 'OK';
