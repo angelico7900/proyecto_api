@@ -6,17 +6,18 @@ $datos = file_get_contents("php://input");
 $datos2 = json_decode($datos);
 $abogado = new Abogado();
 $abogado->conectar();
-$parametros['ciudad'] = $datos2->ciudad;
-$abogados = $abogado->obtenerAbogadosWhere($parametros);
+    $pago = $abogado->obtenerAbogadoMoroso($datos2->correo);
 $response = new stdClass();
-$longitud = count($abogados);
-if($longitud == 0){
-  $response->exito = 'NO';
+$response->exito = 'OK';
+if(count($pago) == 0){
+    $response->pagado = 'ERR';
 }else{
-  $response->exito = 'OK';
-  for($i = 0; $i < $longitud; ++$i){
-    $abogados[$i]['imagen'] = "data:image/png;base64,".base64_encode(file_get_contents($abogados[$i]['imagen']));
+    $fechaActual = strval(date("Y-m-d"));
+    if($fechaActualString > $pago[0]['pagado']){
+        $response->pagado = 'ERR';
+    }else{
+        $response->pagado = 'OK';
+    }
 }
-}
-$response->abogados = $abogados;
 echo(json_encode($response));
+?>

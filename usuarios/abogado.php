@@ -154,5 +154,25 @@ class Abogado extends conBase{
             return false;
         }
     }
+    function obtenerAbogadoMoroso($abogado){
+        $abogado = Cifrar::megaCifrar(Sanitizar::sanitizaCorreo($abogado));
+        $query = $this->conecta->prepare("SELECT pagado from abogado_pago INNER JOIN abogado ON abogado_pago.id_abogado = abogado.id 
+        WHERE abogado.id = (SELECT id FROM abogado WHERE abogado.correo = ?)");
+        $query->bindParam(1,$abogado,PDO::PARAM_STR);
+        $query->execute();
+        $dato = $query->fetchAll();
+        return $dato;
+    }
+    function addPago($datos){
+        try{
+        $query = $this->conecta->prepare("INSERT INTO abogado_pago (id_abogado,pagado) VALUES (?,?)");
+        $query->bindParam(1,$datos['id_abogado'],PDO::PARAM_STR);
+        $query->bindParam(2,$datos['pagado'],PDO::PARAM_STR);
+        $query->execute();
+        return true;
+        }catch(PDOException $e){
+            return false;
+        }
+    }
 }
 ?>
