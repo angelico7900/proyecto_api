@@ -31,6 +31,25 @@ class Abogado extends conBase{
             return false;
         }
     }
+    function updateAbogado($object){
+        try{
+            $correo = Cifrar::megaCifrar(Sanitizar::sanitizaString($object['correo']));
+            $object = Cifrar::megaCifrar(Sanitizar::sanitizaString($object));
+            $object['correo'] = $correo;
+            $query = $this->conecta->prepare("UPDATE abogado SET nombre = ?,apellidos = ?,correo = ?,provincia = ?,dni = ?,n_letrado = ? WHERE correo = ?");
+            $query->bindParam(1,$object['nombre'],PDO::PARAM_STR);
+            $query->bindParam(2,$object['apellidos'],PDO::PARAM_STR);
+            $query->bindParam(3,$object['correo'],PDO::PARAM_STR);
+            $query->bindParam(4,$object['provincia'],PDO::PARAM_STR);
+            $query->bindParam(5,$object['correo'],PDO::PARAM_STR);
+            $query->bindParam(6,$object['dni'],PDO::PARAM_STR);
+            $query->bindParam(7,$object['n_letrado'],PDO::PARAM_STR);
+            $query->execute();
+            return true;
+            }catch(PDOException){
+                return false;
+            }
+    }
     function deleteAbogado($datos){
         $datos = Cifrar::megaCifrar(Sanitizar::sanitizaCorreo($datos));
         try{
@@ -71,7 +90,9 @@ class Abogado extends conBase{
         $query->execute();
         $datos = $query->fetchAll();
             for($i = 0; $i < count($datos);$i++){
+                $id = $datos[$i]['id'];
                 $datos[$i] = Cifrar::megaDescifrar($datos[$i]);
+                $datos[$i]['id'] = $id;
             }
         return $datos;
         }catch(PDOException $e){

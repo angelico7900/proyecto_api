@@ -44,6 +44,27 @@ class Cliente extends conBase{
         }
 
     }
+    function updateCliente($object){
+        try{
+        $correo = Cifrar::megaCifrar(Sanitizar::sanitizaString($object['correo']));
+        $object = Cifrar::megaCifrar(Sanitizar::sanitizaString($object));
+        $object['correo'] = $correo;
+        $query = $this->conecta->prepare("UPDATE cliente SET nombre = ?,apellidos = ?,correo = ?,provincia = ? WHERE correo = ?");
+        $query->bindParam(1,$object['nombre'],PDO::PARAM_STR);
+        $query->bindParam(2,$object['apellidos'],PDO::PARAM_STR);
+        $query->bindParam(3,$object['correo'],PDO::PARAM_STR);
+        $query->bindParam(4,$object['provincia'],PDO::PARAM_STR);
+        $query->bindParam(5,$object['correo'],PDO::PARAM_STR);
+        $query->execute();
+        if($query->rowCount() > 0){
+        return true;
+        }else{
+            return false;
+        }
+        }catch(PDOException){
+            return false;
+        }
+    }
     function getCliente($object){
         $object = Cifrar::megaCifrar(Sanitizar::sanitizaCorreo($object));
         try{
@@ -64,6 +85,26 @@ class Cliente extends conBase{
         }catch(PDOException $e){
             return false;
         }
+    }
+    function getClientes(){        
+        try{
+        $query = $this->conecta->prepare("SELECT * FROM cliente");
+        $query->execute();
+        $datos = $query->fetchAll();
+        if(count($datos) > 0){
+            $contrasena = $datos[0]['contrasena'];
+            $id = $datos[0]['id'];
+        for($i = 0; $i < count($datos);$i++) {
+            $datos[$i] = Cifrar::megaDescifrar($datos[$i]);
+        }
+        $datos[0]['id'] = $id;
+        $datos[0]['contrasena'] = $contrasena;
+        } 
+        return $datos;
+    }catch(PDOException $e){
+        return false;
+    }
+
     }
     function getClienteId($id){
         try{
