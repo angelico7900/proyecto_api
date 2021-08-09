@@ -10,6 +10,9 @@ $response = new stdClass();
 if($longitud > 0){
     for($i = 0; $i < $longitud; ++$i){
         unset($abogados[$i]['contrasena']);
+        for ($j=0; $j < 10; $j++) { 
+            unset($abogados[$i][$j]);
+        }
     }
     $abogado->cerrar();
     $response->exito = 'OK';

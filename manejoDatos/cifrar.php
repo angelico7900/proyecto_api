@@ -19,18 +19,18 @@ class Cifrar{
         }
         
     }
-    static function cifrar2($dato,$hacer="cifrar"){
-        $key2 = hash('sha256','Ka&df##6HBlQ');
-        $iv2 =strtolower(hash('sha256','cEoOm7iXaX'));
-        if($hacer == "cifrar"){
-        $cifrado = openssl_encrypt($dato,'AES-256-CBC',$key2,0,$iv2);
-        return $cifrado;
-        }elseif($hacer == "descifrar"){
-        $key2 = hash('sha256','Ka&df##6HBlQ');
-        $descifrado = openssl_decrypt($dato,'AES-256-CBC',$key2,0,$iv2);
-        return $descifrado;
-        }
-    }
+    // static function cifrar2($dato,$hacer="cifrar"){
+    //     $key2 = hash('sha256','Ka&df##6HBlQ');
+    //     $iv2 =strtolower(hash('sha256','cEoOm7iXaX'));
+    //     if($hacer == "cifrar"){
+    //     $cifrado = openssl_encrypt($dato,'AES-256-CBC',$key2,0,$iv2);
+    //     return $cifrado;
+    //     }elseif($hacer == "descifrar"){
+    //     $key2 = hash('sha256','Ka&df##6HBlQ');
+    //     $descifrado = openssl_decrypt($dato,'AES-256-CBC',$key2,0,$iv2);
+    //     return $descifrado;
+    //     }
+    // }
     static function encriptar($dato){
         $cripto = base64_encode($dato);
         return $cripto;
@@ -52,14 +52,14 @@ class Cifrar{
             foreach ($dato as $key => $value) {
                 $aux = Cifrar::cifrar($value);
                 $aux = Cifrar::encriptar($aux);
-                $aux = Cifrar::cifrar2($aux);
+                $aux = Cifrar::cifrar($aux);
                 $aux = Cifrar::encriptar($aux);
                 $dato[$key] = $aux;
             }
         } else {
                 $dato = Cifrar::cifrar($dato);
                 $dato = Cifrar::encriptar($dato);
-                $dato = Cifrar::cifrar2($dato);
+                $dato = Cifrar::cifrar($dato);
                 $dato = Cifrar::encriptar($dato);
         }
         return $dato;
@@ -68,14 +68,14 @@ class Cifrar{
         if(is_array($dato)){
         foreach($dato as $key => $value){
         $aux = Cifrar::desencriptar($value);
-        $aux = Cifrar::cifrar2($aux,"descifrar");
+        $aux = Cifrar::cifrar($aux,"descifrar");
         $aux = Cifrar::desencriptar($aux);
         $aux = Cifrar::cifrar($aux,"descifrar");
         $dato[$key] = $aux;
         }
     }else{
             $dato = Cifrar::desencriptar($dato);
-            $dato = Cifrar::cifrar2($dato,"descifrar");
+            $dato = Cifrar::cifrar($dato,"descifrar");
             $dato = Cifrar::desencriptar($dato);
             $dato = Cifrar::cifrar($dato,"descifrar");
     }
