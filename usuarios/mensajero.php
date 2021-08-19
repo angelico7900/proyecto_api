@@ -9,15 +9,19 @@ class Mensajero extends conBase{
     }
     function addMensaje($datos){
         try{
-            $datos = Cifrar::megaCifrar(Sanitizar::sanitizaString($datos));
+            $datos['caso'] = Cifrar::megaCifrar(Sanitizar::sanitizaCorreo($datos['caso']));
+            $emisor = $datos['emisor'];
+            $emisor = Cifrar::megaCifrar(Sanitizar::sanitizaCorreo($emisor));
+            $receptor = $datos['receptor'];
+            $receptor = Cifrar::megaCifrar(Sanitizar::sanitizaCorreo($receptor));
             $query = $this->conecta->prepare("INSERT INTO mensajeria (emisor,receptor,caso) VALUES (?,?,?)");
-            $query->bindParam(1,$datos['emisor'],PDO::PARAM_STR);
-            $query->bindParam(2,$datos['receptor'],PDO::PARAM_STR);
+            $query->bindParam(1,$emisor,PDO::PARAM_STR);
+            $query->bindParam(2,$receptor,PDO::PARAM_STR);
             $query->bindParam(3,$datos['caso'],PDO::PARAM_STR);
             $query->execute();
             return true;
         }catch(PDOException $e){
-            return false;
+            return false;;
         }
     }
     function obtenerMensajes($correo){

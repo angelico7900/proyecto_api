@@ -19,18 +19,6 @@ class Cifrar{
         }
         
     }
-    // static function cifrar2($dato,$hacer="cifrar"){
-    //     $key2 = hash('sha256','Ka&df##6HBlQ');
-    //     $iv2 =strtolower(hash('sha256','cEoOm7iXaX'));
-    //     if($hacer == "cifrar"){
-    //     $cifrado = openssl_encrypt($dato,'AES-256-CBC',$key2,0,$iv2);
-    //     return $cifrado;
-    //     }elseif($hacer == "descifrar"){
-    //     $key2 = hash('sha256','Ka&df##6HBlQ');
-    //     $descifrado = openssl_decrypt($dato,'AES-256-CBC',$key2,0,$iv2);
-    //     return $descifrado;
-    //     }
-    // }
     static function encriptar($dato){
         $cripto = base64_encode($dato);
         return $cripto;
