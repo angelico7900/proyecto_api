@@ -176,7 +176,7 @@ class Abogado extends conBase{
             if(count($resultado) == 0){
                 return $resultado;
             }
-            for($i = 0; $i < count($datos);$i++){
+            for($i = 0; $i <= count($datos);$i++){
                 $resultado[$i] = Cifrar::megaDescifrar($resultado[$i]);
             }
             return $resultado;
