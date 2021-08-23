@@ -5,6 +5,7 @@ header('Acces-Control-Allow-Headers: Origin, X-Requested-With,Content-Type,Accep
 $cliente = new Cliente();
 $cliente->conectar();
 $obCliente = $cliente->getClientes();
+$cliente->cerrar();
 $response = new stdClass();
   $response->exito = 'OK';
   $response->clientes = $obCliente;

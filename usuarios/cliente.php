@@ -88,22 +88,18 @@ class Cliente extends conBase{
     }
     function getClientes(){        
         try{
-        $query = $this->conecta->prepare("SELECT * FROM cliente");
-        $query->execute();
-        $datos = $query->fetchAll();
-        if(count($datos) > 0){
-            $contrasena = $datos[0]['contrasena'];
-            $id = $datos[0]['id'];
-        for($i = 0; $i < count($datos);$i++) {
-            $datos[$i] = Cifrar::megaDescifrar($datos[$i]);
+            $query = $this->conecta->prepare("SELECT * FROM cliente");
+            $query->execute();
+            $datos = $query->fetchAll();
+            for($i = 0; $i < count($datos);$i++){
+                $id = $datos[$i]['id'];
+                $datos[$i] = Cifrar::megaDescifrar($datos[$i]);
+                $datos[$i]['id'] = $id;
+            }
+            return $datos;
+        }catch(PDOException $e){
+            return false;
         }
-        $datos[0]['id'] = $id;
-        $datos[0]['contrasena'] = $contrasena;
-        } 
-        return $datos;
-    }catch(PDOException $e){
-        return false;
-    }
 
     }
     function getClienteId($id){
