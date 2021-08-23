@@ -193,6 +193,31 @@ class Abogado extends conBase{
         $dato = $query->fetchAll();
         return $dato;
     }
+    function obtenerAbogadosMorosos(){
+        try{
+        $query = $this->conecta->prepare("SELECT abogado.id,abogado.nombre,abogado.apellidos,abogado.correo FROM abogado,abogado_pago where abogado_pago.id_abogado ");
+        $query->execute();
+        $datos = $query->fetchAll();
+        // $query2 = $this->conecta->prepare("SELECT abogado.id,abogado.nombre,abogado.apellidos,abogado.correo from abogado_pago INNER JOIN abogado on abogado_pago.id_abogado = abogado.id");
+        // $query2->execute();
+        // $datos2 = $query2->fetchAll();
+        // for ($i=0; $i < count($datos2); $i++) { 
+        //     $fechaActual = strval(date("Y-m-d"));
+        //     if($fechaActual > $datos2[$i]['pagado']){
+        //         $datos[] = $datos2[$i];
+        //     }else{
+                
+        //     }
+        // }
+        // for($i = 0; $i <= count($datos);$i++){
+        //     $datos[$i] = Cifrar::megaDescifrar($datos[$i]);
+        // }
+        return $datos;
+        
+        }catch(PDOException $e){
+            return false;
+        }
+    }
     function addPago($datos){
         try{
         $query = $this->conecta->prepare("INSERT INTO abogado_pago (id_abogado,pagado) VALUES (?,?)");
@@ -205,4 +230,3 @@ class Abogado extends conBase{
         }
     }
 }
-?>
