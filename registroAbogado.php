@@ -20,7 +20,6 @@ $abogado = new Abogado();
 $abogado->conectar();
 $response = new stdClass();
 $user = $abogado->getAbogado($datosAbogado['correo']);
-count($user);
 if(count($user) > 0){
   $response->exito = "EXISTS";
 }

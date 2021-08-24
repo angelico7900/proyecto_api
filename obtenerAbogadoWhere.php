@@ -6,8 +6,7 @@ $datos = file_get_contents("php://input");
 $datos2 = json_decode($datos);
 $abogado = new Abogado();
 $abogado->conectar();
-$parametros['ciudad'] = $datos2->ciudad;
-$abogados = $abogado->obtenerAbogadosWhere($parametros);
+$abogados = $abogado->obtenerAbogadosWhere($datos2->ciudad);
 $response = new stdClass();
 $longitud = count($abogados);
 if($longitud == 0){

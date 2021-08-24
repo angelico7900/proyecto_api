@@ -62,24 +62,32 @@ class Abogado extends conBase{
         }
 
     }
-    function getAbogado($object){
+    function getAbogado($object,$letrado = null){
         $object = Cifrar::megaCifrar(Sanitizar::sanitizaCorreo($object));
+        $letrado = Cifrar::megaCifrar(Sanitizar::sanitizaCorreo($letrado));
         try{
-        $query = $this->conecta->prepare("SELECT * FROM abogado WHERE abogado.correo = ?");
-        $query->bindParam(1,$object,PDO::PARAM_STR);
-        $query->execute();
-        $datos = $query->fetchAll();
+            $query = null;
+            if($letrado == null){
+                $query = $this->conecta->prepare("SELECT * FROM abogado WHERE abogado.correo = ?");
+                $query->bindParam(1,$object,PDO::PARAM_STR);
+            }else{
+                $query = $this->conecta->prepare("SELECT * FROM abogado WHERE abogado.correo = ? OR abogado.n_letrado = ?");
+                $query->bindParam(1,$object,PDO::PARAM_STR);
+                $query->bindParam(2,$letrado,PDO::PARAM_STR);
+            }
+            $query->execute();
+            $datos = $query->fetchAll();
 
-        if(count($datos) != 0){
-            $contrasena = $datos[0]['contrasena'];
-            $id = $datos[0]['id'];
-        for($i = 0; $i < count($datos);$i++) {
-            $datos[$i] = Cifrar::megaDescifrar($datos[$i]);
-        }
-        $datos[0]['contrasena'] = $contrasena;
-        $datos[0]['id'] = $id;
-        } 
-        return $datos;
+            if(count($datos) != 0){
+                $contrasena = $datos[0]['contrasena'];
+                $id = $datos[0]['id'];
+            for($i = 0; $i < count($datos);$i++) {
+                $datos[$i] = Cifrar::megaDescifrar($datos[$i]);
+            }
+            $datos[0]['contrasena'] = $contrasena;
+            $datos[0]['id'] = $id;
+            } 
+            return $datos;
         }catch(PDOException $e){
             return false;
         }
@@ -89,7 +97,7 @@ class Abogado extends conBase{
         $query = $this->conecta->prepare("SELECT * FROM abogado");
         $query->execute();
         $datos = $query->fetchAll();
-            for($i = 0; $i < count($datos);$i++){
+            for($i = 0; $i <  count($datos);$i++){
                 $id = $datos[$i]['id'];
                 $datos[$i] = Cifrar::megaDescifrar($datos[$i]);
                 $datos[$i]['id'] = $id;
@@ -170,13 +178,13 @@ class Abogado extends conBase{
         try{
             $datos = Cifrar::megaCifrar(Sanitizar::sanitizaString($datos));
             $query = $this->conecta->prepare("SELECT * FROM abogado WHERE provincia = ?");
-            $query->bindParam(1,$datos['ciudad'],PDO::PARAM_STR);
+            $query->bindParam(1,$datos,PDO::PARAM_STR);
             $query->execute();
             $resultado = $query->fetchAll();
             if(count($resultado) == 0){
                 return $resultado;
             }
-            for($i = 0; $i <= count($datos);$i++){
+            for($i = 0; $i < count($resultado);$i++){
                 $resultado[$i] = Cifrar::megaDescifrar($resultado[$i]);
             }
             return $resultado;
