@@ -195,25 +195,34 @@ class Abogado extends conBase{
     }
     function obtenerAbogadosMorosos(){
         try{
-        $query = $this->conecta->prepare("SELECT abogado.id,abogado.nombre,abogado.apellidos,abogado.correo FROM abogado,abogado_pago where abogado_pago.id_abogado ");
+        $query = $this->conecta->prepare("SELECT abogado.id,abogado.nombre,abogado.apellidos,abogado.correo FROM abogado,abogado_pago where abogado_pago.id_abogado");
         $query->execute();
         $datos = $query->fetchAll();
-        // $query2 = $this->conecta->prepare("SELECT abogado.id,abogado.nombre,abogado.apellidos,abogado.correo from abogado_pago INNER JOIN abogado on abogado_pago.id_abogado = abogado.id");
-        // $query2->execute();
-        // $datos2 = $query2->fetchAll();
-        // for ($i=0; $i < count($datos2); $i++) { 
-        //     $fechaActual = strval(date("Y-m-d"));
-        //     if($fechaActual > $datos2[$i]['pagado']){
-        //         $datos[] = $datos2[$i];
-        //     }else{
+        $query2 = $this->conecta->prepare("SELECT abogado.id,abogado.nombre,abogado.apellidos,abogado.correo from abogado where abogado.id not IN (SELECT id_abogado from abogado_pago)");
+        $query2->execute();
+        $datos2 = $query2->fetchAll();
+        if(count($datos) > 0){
+        for ($i=0; $i < count($datos2); $i++) { 
+            $fechaActual = strval(date("Y-m-d"));
+            if($fechaActual > $datos2[$i]['pagado']){
+                $datos[] = $datos2[$i];
+            }else{
                 
-        //     }
-        // }
-        // for($i = 0; $i <= count($datos);$i++){
-        //     $datos[$i] = Cifrar::megaDescifrar($datos[$i]);
-        // }
+            }
+        }
+    }else{
+        $datos = $datos2;
+    }
+        for($i = 0; $i < count($datos);$i++){
+            $id = $datos[$i]['id'];
+            unset($datos[$i]['id']);
+            $datos[$i] = Cifrar::megaDescifrar($datos[$i]);
+            $datos[$i]['id'] = $id;
+            for($j = 0; $j < 4;$j++){
+                unset($datos[$i][$j]);
+            }
+        }
         return $datos;
-        
         }catch(PDOException $e){
             return false;
         }

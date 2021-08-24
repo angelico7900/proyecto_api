@@ -1,7 +1,7 @@
 <?php
-include("usuarios/mensajero.php");
-include("usuarios/cliente.php");
-include("usuarios/abogado.php");
+include_once("usuarios/mensajero.php");
+include_once("usuarios/cliente.php");
+include_once("usuarios/abogado.php");
 header('Access-Control-Allow-Origin: *');
 header('Acces-Control-Allow-Headers: Origin, X-Requested-With,Content-Type,Accept');
 $datos = file_get_contents('php://input');

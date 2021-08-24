@@ -75,5 +75,8 @@ class Mensajero extends conBase{
             return false;
         }
     }
+    function enviarAviso(){
+        
+    }
 }
 ?>

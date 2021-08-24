@@ -10,7 +10,6 @@ $parametros['caso'] = $datos2->caso;
 $mensajero = new Mensajero();
 $mensajero->conectar();
 $response = new stdClass();
-//echo(json_encode($mensajero->addMensaje($parametros)));
 if($mensajero->addMensaje($parametros)){
     $response->exito = 'OK';
 }else{
