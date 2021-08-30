@@ -36,14 +36,14 @@ class Abogado extends conBase{
             $correo = Cifrar::megaCifrar(Sanitizar::sanitizaString($object['correo']));
             $object = Cifrar::megaCifrar(Sanitizar::sanitizaString($object));
             $object['correo'] = $correo;
-            $query = $this->conecta->prepare("UPDATE abogado SET nombre = ?,apellidos = ?,correo = ?,provincia = ?,dni = ?,n_letrado = ? WHERE correo = ?");
+            $query = $this->conecta->prepare("UPDATE abogado SET nombre = ?,apellidos = ?,dni = ?,n_letrado = ?,correo = ?,provincia = ? WHERE correo = ?");
             $query->bindParam(1,$object['nombre'],PDO::PARAM_STR);
             $query->bindParam(2,$object['apellidos'],PDO::PARAM_STR);
-            $query->bindParam(3,$object['correo'],PDO::PARAM_STR);
-            $query->bindParam(4,$object['provincia'],PDO::PARAM_STR);
+            $query->bindParam(3,$object['dni'],PDO::PARAM_STR);
+            $query->bindParam(4,$object['n_letrado'],PDO::PARAM_STR);
             $query->bindParam(5,$object['correo'],PDO::PARAM_STR);
-            $query->bindParam(6,$object['dni'],PDO::PARAM_STR);
-            $query->bindParam(7,$object['n_letrado'],PDO::PARAM_STR);
+            $query->bindParam(6,$object['provincia'],PDO::PARAM_STR);
+            $query->bindParam(7,$object['correo'],PDO::PARAM_STR);
             $query->execute();
             return true;
             }catch(PDOException){
