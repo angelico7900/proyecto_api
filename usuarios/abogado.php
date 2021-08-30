@@ -203,7 +203,7 @@ class Abogado extends conBase{
     }
     function obtenerAbogadosMorosos(){
         try{
-        $query = $this->conecta->prepare("SELECT abogado.id,abogado.nombre,abogado.apellidos,abogado.correo FROM abogado,abogado_pago where abogado_pago.id_abogado");
+        $query = $this->conecta->prepare("SELECT abogado.id,abogado.nombre,abogado.apellidos,abogado.correo FROM abogado,abogado_pago where abogado_pago.id_abogado = abogado.id and abogado_pago.pagado < now()");
         $query->execute();
         $datos = $query->fetchAll();
         $query2 = $this->conecta->prepare("SELECT abogado.id,abogado.nombre,abogado.apellidos,abogado.correo from abogado where abogado.id not IN (SELECT id_abogado from abogado_pago)");
