@@ -56,8 +56,26 @@ class Abogado extends conBase{
         $query = $this->conecta->prepare("DELETE FROM abogado WHERE abogado.correo = ?");
         $query->bindParam(1,$datos,PDO::PARAM_STR);
         $query->execute();
-        return true;
+        if(Abogado::eliminarImagen($datos)){
+            return true;
+        }else{
+            return false;
+        }
+        
         }catch(PDOException $e){
+            return false;
+        }
+
+    }
+    static function eliminarImagen($imagen){
+        try{
+        $ruta = "img/".$imagen.".png";
+        if(unlink($ruta)){
+            return true;
+        }else{
+            return false;
+        }
+        }catch(Exception $e){
             return false;
         }
 

@@ -9,7 +9,7 @@ class Mensajero extends conBase{
     }
     function addMensaje($datos){
         try{
-            $datos['caso'] = Cifrar::megaCifrar(Sanitizar::sanitizaCorreo($datos['caso']));
+            $datos['caso'] = Cifrar::megaCifrar(Sanitizar::sanitizaString($datos['caso']));
             $emisor = $datos['emisor'];
             $emisor = Cifrar::megaCifrar(Sanitizar::sanitizaCorreo($emisor));
             $receptor = $datos['receptor'];
