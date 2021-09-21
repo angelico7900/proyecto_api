@@ -1,0 +1,12 @@
+usuario(#id,usuario,correo,contrasena,provincia)
+denuncia(#id,resultado,motivo,fecha,-id_usuario_denunciante,-id_usuario_denunciado)
+prueba(#id,-id_denuncia,prueba)
+profesional(#id,imagen,precio,descripcion,-id_usuario)
+especialidad(#id,especialidad,-id_profesional)
+despacho(#id,nombre,-id_profesional)
+abogado(#id,nombre,apellidos,DNI,n_letrado,-id_despacho,-id_profesional)
+cliente(#id,nombre,apellidos,-id_usuario)
+caso(#id,fecha_publicacion,descripcion,tipo,resolucion,finalizado,-id_profesioanl,-id_cliente)
+profesional_cliente(#(-id_profesional,-id_cliente))
+
+

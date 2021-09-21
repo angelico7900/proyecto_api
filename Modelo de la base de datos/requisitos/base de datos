@@ -1,0 +1,132 @@
+DROP DATABASE IF EXISTS  abogados;
+CREATE DATABASE abogados;
+use abogados;
+
+create table abogado(
+	id int AUTO_INCREMENT,
+    nombre varchar(255),
+    apellidos varchar(255),
+    DNI varchar(255),
+    n_letrado varchar(255),
+    correo varchar(255),
+    contrasena varchar(255),
+    provincia varchar(255),
+    usuario varchar(255),
+    descripcion varchar(2000),
+    imagen varchar (1000),
+    id_despacho int,
+    PRIMARY KEY(id)
+);
+create table especialidad_abogado(
+	id int AUTO_INCREMENT,
+    especialidad varchar(100),
+    id_abogado int,
+    descripcion varchar(2000),
+    PRIMARY KEY(id),
+    FOREIGN KEY(id_abogado)
+    	REFERENCES abogado(id)
+    	ON DELETE CASCADE
+    	ON UPDATE CASCADE
+);
+create table cliente(
+	id int AUTO_INCREMENT,
+	nombre varchar(255),
+	apellidos varchar(255),
+	usuario varchar(255),
+	correo varchar(255),
+	contrasena varchar(255),
+	provincia varchar(255),
+    PRIMARY KEY(id)
+);
+create table caso(
+	id int AUTO_INCREMENT,
+    fecha_publicacion date,
+    descripcion varchar(2000),
+    tipo varchar(100),
+    resolucion varchar(2000),
+     PRIMARY KEY(id)
+);
+create table caso_abogado(
+	id_caso int,
+    id_abogado int,
+    finalizado tinyint(1),
+    FOREIGN KEY (id_caso)
+    	REFERENCES caso(id)
+    	ON DELETE CASCADE
+    	ON UPDATE CASCADE
+
+);
+
+create table mensajeria(
+id int AUTO_INCREMENT,
+    emisor varchar(100),
+    receptor varchar(100),
+    caso varchar(1500),
+    PRIMARY KEY(id)
+);
+CREATE TABLE opiniones(
+id int AUTO_INCREMENT,
+    opinion varchar(1000),
+   	id_abogado int,
+    id_cliente int,
+        PRIMARY KEY(id),
+    FOREIGN KEY (id_abogado)
+    REFERENCES abogado(id)
+    	ON DELETE CASCADE
+    	ON UPDATE CASCADE,
+    FOREIGN KEY(id_cliente)
+    	REFERENCES cliente(id)
+    	ON DELETE CASCADE
+    	ON UPDATE CASCADE
+);
+use abogados;
+CREATE TABLE abogado_pago(
+id int AUTO_INCREMENT,
+    id_abogado int,
+    pagado DATE,
+    PRIMARY KEY(id),
+    FOREIGN KEY(id_abogado)
+    	REFERENCES abogado(id)
+    	ON DELETE CASCADE
+    	ON UPDATE CASCADE
+);
+CREATE TABLE administrador(
+	id int,
+    nombre varchar(255),
+    contrasena varchar(255)
+);
+
+DELIMITER |
+create TRIGGER modificar_correos_mensaje_abogado AFTER UPDATE ON abogado
+FOR EACH ROW
+BEGIN
+	UPDATE mensajeria set emisor = NEW.correo WHERE emisor = OLD.correo;
+    UPDATE mensajeria set receptor = NEW.correo WHERE receptor = OLD.correo;
+END;
+|
+DELIMITER ;
+DELIMITER |
+create TRIGGER modificar_correos_mensaje_cliente AFTER UPDATE ON cliente
+FOR EACH ROW
+BEGIN
+	UPDATE mensajeria set emisor = NEW.correo WHERE emisor = OLD.correo;
+    UPDATE mensajeria set receptor = NEW.correo WHERE receptor = OLD.correo;
+END;
+|
+DELIMITER ;
+DELIMITER |
+create TRIGGER eliminar_correos_mensaje_abogado AFTER DELETE ON abogado
+FOR EACH ROW
+BEGIN
+	DELETE FROM mensajeria where receptor = OLD.correo OR emisor = OLD.correo;
+END;
+|
+DELIMITER ;
+DELIMITER |
+create TRIGGER eliminar_correos_mensaje_cliente AFTER DELETE ON cliente
+FOR EACH ROW
+BEGIN
+	DELETE FROM mensajeria where receptor = OLD.correo OR emisor = OLD.correo;
+END;
+|
+DELIMITER ;
